@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   View,
   Appearance,
+  KeyboardAvoidingView,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Modal from "./Modal";
@@ -150,39 +151,41 @@ export class DateTimePickerModal extends React.PureComponent {
         backdropStyle={backdropStyleIOS}
         {...modalPropsIOS}
       >
-        <View
-          style={[
-            pickerStyles.container,
-            themedContainerStyle,
-            pickerContainerStyleIOS,
-          ]}
-        >
-          {HeaderComponent && <HeaderComponent />}
-          {!HeaderComponent && display === "inline" && (
-            <View style={pickerStyles.headerFiller} />
-          )}
+        <KeyboardAvoidingView behavior={"position"}>
           <View
             style={[
-              display === "inline"
-                ? pickerStyles.pickerInline
-                : pickerStyles.pickerSpinner,
-              pickerStyleIOS,
+              pickerStyles.container,
+              themedContainerStyle,
+              pickerContainerStyleIOS,
             ]}
           >
-            <PickerComponent
-              display={display || "spinner"}
-              {...otherProps}
-              value={this.state.currentDate}
-              onChange={this.handleChange}
+            {HeaderComponent && <HeaderComponent />}
+            {!HeaderComponent && display === "inline" && (
+              <View style={pickerStyles.headerFiller} />
+            )}
+            <View
+              style={[
+                display === "inline"
+                  ? pickerStyles.pickerInline
+                  : pickerStyles.pickerSpinner,
+                pickerStyleIOS,
+              ]}
+            >
+              <PickerComponent
+                display={display || "spinner"}
+                {...otherProps}
+                value={this.state.currentDate}
+                onChange={this.handleChange}
+              />
+            </View>
+            <ConfirmButtonComponent
+              confirmButtonTestID={confirmButtonTestID}
+              isDarkModeEnabled={_isDarkModeEnabled}
+              onPress={this.handleConfirm}
+              label={confirmTextIOS}
             />
           </View>
-          <ConfirmButtonComponent
-            confirmButtonTestID={confirmButtonTestID}
-            isDarkModeEnabled={_isDarkModeEnabled}
-            onPress={this.handleConfirm}
-            label={confirmTextIOS}
-          />
-        </View>
+        </KeyboardAvoidingView>
         <CancelButtonComponent
           cancelButtonTestID={cancelButtonTestID}
           isDarkModeEnabled={_isDarkModeEnabled}
